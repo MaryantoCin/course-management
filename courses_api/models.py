@@ -11,6 +11,10 @@ class Course(models.Model):
 
 class Lesson(models.Model):
     """Database model for lesson"""
+    course = models.ForeignKey(
+        Course,
+        on_delete=models.CASCADE
+    )
     lesson_title = models.CharField(max_length=255)
 
     def __str__(self):
@@ -18,5 +22,9 @@ class Lesson(models.Model):
 
 class Material(models.Model):
     """Database model for material"""
+    lesson = models.ForeignKey(
+        Lesson, 
+        on_delete=models.CASCADE
+    )
     material_title = models.CharField(max_length=255)
     material_youtube_link = models.CharField(max_length=255)
