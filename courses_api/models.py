@@ -27,4 +27,5 @@ class Material(models.Model):
         on_delete=models.CASCADE
     )
     material_title = models.CharField(max_length=255)
+    material_description = models.CharField(max_length=255)
     material_youtube_link = models.CharField(max_length=255)
