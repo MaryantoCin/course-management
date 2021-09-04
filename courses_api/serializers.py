@@ -7,7 +7,7 @@ class MaterialSerializer(serializers.ModelSerializer):
   class Meta:
     model = models.Material
     fields = ('id', 'lesson', 'material_title', 'material_description', 'material_youtube_link')
-    extra_kwargs = {'lesson': {"validators": []}}
+    extra_kwargs = {'lesson': {'required': False}}
 
 
 class LessonSerializer(serializers.ModelSerializer):
@@ -15,26 +15,25 @@ class LessonSerializer(serializers.ModelSerializer):
   class Meta:
     model = models.Lesson
     fields = ('id', 'course', 'lesson_title', 'materials')
-    extra_kwargs = {'course': {"validators": []}}
+    extra_kwargs = {'course': {'required': False}}
 
 class CourseSerializer(serializers.ModelSerializer):
   lessons = LessonSerializer(many=True)
   class Meta:
     model = models.Course
     fields = ('id', 'course_title', 'course_description', 'lessons')
-    validators = []
+    extra_kwargs = {'lessons': {'required': False}}
 
   def create(self, validated_data):
     lessons_data = validated_data.pop('lessons', None)
     newcourse = models.Course.objects.create(**validated_data)
-    
     if lessons_data:
       for lesson_data in lessons_data:
         materials_data = lesson_data.pop('materials', None)
-        models.Lesson.objects.create(**lesson_data)
+        newlesson = models.Lesson.objects.create(**lesson_data, course=newcourse)
         if materials_data:
           for material_data in materials_data:
-            models.Material.objects.create(**material_data)
+            models.Material.objects.create(**material_data, lesson=newlesson)
 
     return newcourse
 
