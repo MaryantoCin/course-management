@@ -29,13 +29,13 @@ class CourseSerializer(serializers.ModelSerializer):
 
   def create(self, validated_data):
     """Handling inserting nested course"""
+    lessons_data = validated_data.pop('lessons', None)
     newcourse = models.Course.objects.create(**validated_data)
     
-    lessons_data = validated_data.pop('lessons', None)
     if lessons_data:
       for lesson_data in lessons_data:
-        newlesson = models.Lesson.objects.create(**lesson_data, course=newcourse)
         materials_data = lesson_data.pop('materials', None)
+        newlesson = models.Lesson.objects.create(**lesson_data, course=newcourse)
         if materials_data:
           for material_data in materials_data:
             models.Material.objects.create(**material_data, lesson=newlesson)
