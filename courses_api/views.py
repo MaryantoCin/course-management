@@ -4,7 +4,7 @@ from courses_api import serializers
 from courses_api import models
 
 class CourseViewSet(viewsets.ModelViewSet):
-  """Handle Course CRUD"""
+  """Handle Course Nested CRUD"""
   serializer_class = serializers.CourseSerializer
   queryset = models.Course.objects.all()
 
@@ -21,6 +21,6 @@ class MaterialViewSet(viewsets.ModelViewSet):
   queryset = models.Material.objects.all()
 
 class IndividualCourseViewSet(viewsets.ModelViewSet):
-  """Handle Lesson CRUD"""
+  """Handle Course only CRUD"""
   serializer_class = serializers.CourseSerializer2
   queryset = models.Course.objects.all()
