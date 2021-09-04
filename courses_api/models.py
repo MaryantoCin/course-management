@@ -9,6 +9,7 @@ class Course(models.Model):
     def __str__(self):
         return self.course_title
 
+
 class Lesson(models.Model):
     """Database model for lesson"""
     course = models.ForeignKey(
@@ -20,6 +21,7 @@ class Lesson(models.Model):
 
     def __str__(self):
         return self.lesson_title
+
 
 class Material(models.Model):
     """Database model for material"""

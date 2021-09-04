@@ -72,6 +72,7 @@ class LessonSerializer2(serializers.ModelSerializer):
     model = models.Lesson
     fields = ('id', 'course', 'lesson_title')
 
+
 class CourseSerializer2(serializers.ModelSerializer):
   """Serializes Course Object"""
   class Meta:

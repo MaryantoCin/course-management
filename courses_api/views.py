@@ -20,6 +20,7 @@ class MaterialViewSet(viewsets.ModelViewSet):
   serializer_class = serializers.MaterialSerializer
   queryset = models.Material.objects.all()
 
+
 class IndividualCourseViewSet(viewsets.ModelViewSet):
   """Handle Course only CRUD"""
   serializer_class = serializers.CourseSerializer2
