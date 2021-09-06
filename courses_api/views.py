@@ -11,7 +11,7 @@ class CourseViewSet(viewsets.ModelViewSet):
 
 class LessonViewSet(viewsets.ModelViewSet):
   """Handle Lesson CRUD"""
-  serializer_class = serializers.LessonSerializer2
+  serializer_class = serializers.LessonSerializer
   queryset = models.Lesson.objects.all()
 
 
@@ -23,5 +23,5 @@ class MaterialViewSet(viewsets.ModelViewSet):
 
 class IndividualCourseViewSet(viewsets.ModelViewSet):
   """Handle Course only CRUD"""
-  serializer_class = serializers.CourseSerializer2
+  serializer_class = serializers.IndividualCourseSerializer
   queryset = models.Course.objects.all()

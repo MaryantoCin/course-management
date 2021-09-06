@@ -12,12 +12,10 @@ class MaterialSerializer(serializers.ModelSerializer):
 
 
 class LessonSerializer(serializers.ModelSerializer):
-  """Serializes Nested Lesson object"""
-  materials = MaterialSerializer(many=True)
+  """Serializes Lesson Object"""
   class Meta:
     model = models.Lesson
-    fields = ('id', 'course', 'lesson_title', 'materials')
-    extra_kwargs = {'course': {'required': False}}
+    fields = ('id', 'course', 'lesson_title')
 
 class CourseSerializer(serializers.ModelSerializer):
   """Serializes Nested Course object"""
@@ -48,32 +46,25 @@ class CourseSerializer(serializers.ModelSerializer):
     instance.course_description = validated_data.get('course_description', instance.course_description)
     instance.save()
 
-    # lessons_data = validated_data.pop('lessons', None)
-    # if lessons_data:
-    #   for lesson_data in lessons_data:
-    #     lesson = models.Lesson.objects.filter(id=lesson_data.get('id') ,course=instance.id)
-    #     lesson.lesson_title = lesson_data.get('lesson_title', lesson.lesson_title)
-    #     lesson.save()
-    #     materials_data = lesson_data.pop('materials', None)
-    #     if materials_data:
-    #       for material_data in materials_data:
-    #         material = models.Material.objects.filter(id=material_data.get('id'), lesson=lesson)
-    #         material.material_title = material_data.get('material_title', material.material_title)
-    #         material.material_description = material_data.get('material_description', material.material_description)
-    #         material.material_youtube_link = material_data.get('material_youtube_link', material.material_youtube_link)
-    #         material.save()
+    lessons_data = validated_data.pop('lessons', None)
+    if lessons_data:
+      for lesson_data in lessons_data:
+        lesson = models.Lesson.objects.get(id=lesson_data.id)
+        lesson.lesson_title = lesson_data.get('lesson_title', lesson.lesson_title)
+        lesson.save()
+        materials_data = lesson_data.pop('materials', None)
+        if materials_data:
+          for material_data in materials_data:
+            material = models.Material.objects.filter(id=material_data.get('id'), lesson=lesson)
+            material.material_title = material_data.get('material_title', material.material_title)
+            material.material_description = material_data.get('material_description', material.material_description)
+            material.material_youtube_link = material_data.get('material_youtube_link', material.material_youtube_link)
+            material.save()
     
     return instance
 
 
-class LessonSerializer2(serializers.ModelSerializer):
-  """Serializes Lesson Object"""
-  class Meta:
-    model = models.Lesson
-    fields = ('id', 'course', 'lesson_title')
-
-
-class CourseSerializer2(serializers.ModelSerializer):
+class IndividualCourseSerializer(serializers.ModelSerializer):
   """Serializes Course Object"""
   class Meta:
     model = models.Course
